@@ -1,0 +1,29 @@
+ Hawk，一款基于SharedPreferences的存储框架。
+    1.添加依赖：
+    compile 'com.orhanobut:hawk:2.0.1'
+
+    2、初始化：
+    Hawk.init(context).build();
+    上面两个步骤基本是框架类必须的了。接下来就可以使用啦。
+    
+    3、API：
+    保存数据：
+    Hawk.put(key , T );
+
+    获取数据：
+    T value= Hawk.get(key);
+
+    删除数据：
+    Hawk.delete(key);
+
+    数据是否已经保存：
+    Hawk.contains(key);
+
+    检查已经存储的数据总数：
+    Hawk.count();
+
+    删除全部数据：
+    Hawk.deleteAll();
+
+
+推荐一款轻量级的Android缓存框架：ASimpleCache 可存储list之后研究下。

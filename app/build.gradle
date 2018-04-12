@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "26.0.2"
+
+    defaultConfig {
+        applicationId "com.example.cameratest"
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+    }
+
+    //签名
+//    signingConfigs {
+//        debugConfig {
+//            storeFile file("../wooyun_keystore")      //签名文件
+//            storePassword "123456"
+//            keyAlias "123456"
+//            keyPassword "123456"  //签名密码
+//        }
+//        release{
+//            storeFile file("../wooyun_keystore")      //签名文件
+//            storePassword "123456"
+//            keyAlias "123456"
+//            keyPassword "123456"  //签名密码
+//        }
+//    }
+
+    buildTypes {
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            applicationVariants.all { variant ->
+                variant.getPackageApplication().outputDirectory = new File(outputDir())
+                variant.outputs.all { output ->
+                    if (variant.buildType.name.equals('release') || variant.buildType.name.equals('debug')) {
+                        outputFileName = "CameraJXD2.0.apk"
+                    }
+                }
+            }
+        }
+    }
+
+//    productFlavors {
+//        kuan {}
+//        xiaomi {}
+//        qh360 {}
+//        baidu {}
+//        wandoujia {}
+//    }
+//
+//    productFlavors.all {
+//        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+//    }
+}
+
+def outputDir() {
+    return project.buildDir.absolutePath + "/outputs/apk"
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    //testCompile 'junit:junit:4.12'
+    //hawk，sharedpreferences框架
+    compile 'com.orhanobut:hawk:2.0.1'
+    compile 'pub.devrel:easypermissions:0.3.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    //android 开关按钮框架
+    //compile 'com.zcw:togglebutton-library:1.0.0'
+}

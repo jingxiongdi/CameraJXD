@@ -1,0 +1,15 @@
+1.GridView的使用。
+    android:stretchMode="columnWidth"     缩放与列宽大小同步
+    <!--如何填满空余的位置，模拟器采用WVGA800*480，每排4列，有4＊100＋5＊3＝415，还余65px的空间，
+    如果是columnWidth，则这剩余的65将分摊给4列，每列增加16/17px。如果采用SpacingWidth，
+    则分摊给3个间隔空隙 -->
+    spacingWidth会把所有多出来的空间放到各列之间
+    spacingWidthUniform 会把多出来的空间放到所有item的左右两边
+    spacingWidthUniform的效果就像把item集中一样，spacingWidth：第一列的左边和最后一列的右边，
+    不会被分配空间
+
+
+
+    踩坑1：清单文件里面权限要加在application标签的前面，否则一直提示权限不够，打不开相机。
+    （camera open 提示  Fail to connect to camera service 是相机权限问题）
+
