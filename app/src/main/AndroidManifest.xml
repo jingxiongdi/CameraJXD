@@ -38,6 +38,7 @@
         <activity android:name=".activity.RecordVideoActivity" />
         <activity android:name=".activity.VideoSettingsActivity" />
         <activity android:name=".activity.GalleryActivity"></activity>
+        <activity android:name=".activity.VideoPreviewActivity"></activity>
     </application>
 
 </manifest>
