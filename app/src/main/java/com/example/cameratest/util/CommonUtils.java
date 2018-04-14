@@ -15,6 +15,7 @@ public class CommonUtils {
     public static File[] getImgs(Context context)
     {
         File folder = new File(CameraApp.getInstance().getAllSdPaths(context)[0]+"/CameraJXD/Photo");
+      //  File folder = new File(CameraApp.getInstance().getAllSdPaths(context)[0]+"/DCIM/Camera");
         if(!folder.exists())
         {
             folder.mkdirs();

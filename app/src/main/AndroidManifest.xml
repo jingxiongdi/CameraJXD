@@ -25,7 +25,9 @@
         <!-- android:name="UMENG_CHANNEL" -->
         <!-- android:value="${UMENG_CHANNEL_VALUE}" /> -->
 
-        <activity android:name=".activity.InitActivity">
+        <activity android:name=".activity.InitActivity"
+            android:launchMode="singleTask"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,12 +35,30 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.TakePictureActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.PictureSettingsActivity" />
-        <activity android:name=".activity.RecordVideoActivity" />
-        <activity android:name=".activity.VideoSettingsActivity" />
-        <activity android:name=".activity.GalleryActivity"></activity>
-        <activity android:name=".activity.VideoPreviewActivity"></activity>
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            />
+        <activity android:name=".activity.PictureSettingsActivity"
+            android:launchMode="singleTask"
+            />
+        <activity android:name=".activity.RecordVideoActivity"
+            android:launchMode="singleTask"
+            />
+        <activity android:name=".activity.VideoSettingsActivity"
+            android:launchMode="singleTask"
+            />
+        <activity android:name=".activity.GalleryActivity"
+            android:launchMode="singleTask"
+            ></activity>
+        <activity android:name=".activity.VideoPreviewActivity"
+            android:launchMode="singleTask"
+            ></activity>
+        <activity android:name=".activity.PlayActivity"
+            android:launchMode="singleTask"
+            />
+        <activity android:name=".activity.PhotoPreviewActivity"
+            android:launchMode="singleTask"
+            />
     </application>
 
 </manifest>

@@ -6,6 +6,7 @@ import com.example.cameratest.util.Contants;
 import com.orhanobut.hawk.Hawk;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
@@ -19,6 +20,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -39,6 +41,7 @@ public class RecordVideoActivity extends Activity implements SurfaceHolder.Callb
     private ToggleButton swichCameraBtn = null;
     private ToggleButton flashBtn = null;
     private boolean openFlashLight = false;
+    private ImageView previewImageView = null;
 
     private Runnable mTimeRun = new Runnable() {
         @Override
@@ -173,6 +176,16 @@ public class RecordVideoActivity extends Activity implements SurfaceHolder.Callb
         mSurfaceView = (SurfaceView) findViewById(R.id.surface_view);
         mControlBtn = (Button) findViewById(R.id.start_photo);
         mTime = (TextView) findViewById(R.id.time);
+
+        previewImageView = (ImageView) findViewById(R.id.video_preview);
+        previewImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RecordVideoActivity.this,VideoPreviewActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         mSurfaceHolder = mSurfaceView.getHolder();
         mSurfaceHolder.addCallback(this);
@@ -418,4 +431,8 @@ public class RecordVideoActivity extends Activity implements SurfaceHolder.Callb
         mCamera = null;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }

@@ -60,7 +60,8 @@ public class GalleryActivity extends Activity {
             Toast.makeText(GalleryActivity.this,"当前目录下还没有存储照片",Toast.LENGTH_LONG).show();
             return;
         }
-        curPos = imgs.length-1;
+        curPos = getIntent().getIntExtra("current_postion",imgs.length-1);
+        //curPos = imgs.length-1;
         Glide.with(this).load(imgs[curPos]).into(curImgView);
 //        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {//设置转化工厂
 //

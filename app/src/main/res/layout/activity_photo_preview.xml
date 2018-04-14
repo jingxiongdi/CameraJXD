@@ -11,6 +11,7 @@
        android:layout_height="wrap_content"
        android:textSize="22sp"
        android:text="正在获取视频缩略图，请稍等..."
+       android:visibility="gone"
        android:textColor="@color/colorAccent"
        android:layout_centerInParent="true"
        />

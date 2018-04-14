@@ -76,7 +76,7 @@ public class TakePictureActivity extends Activity implements SurfaceHolder.Callb
         roundImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(TakePictureActivity.this,GalleryActivity.class);
+                Intent i = new Intent(TakePictureActivity.this,PhotoPreviewActivity.class);
                 startActivity(i);
             }
         });
@@ -442,6 +442,7 @@ public class TakePictureActivity extends Activity implements SurfaceHolder.Callb
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    mCamera.startPreview();
                     Toast.makeText(TakePictureActivity.this, "拍照成功，存储路径为：" + Environment.getExternalStorageDirectory() + "/CameraJXD/photo/" + "rotate" + fname, Toast.LENGTH_SHORT).show();
                 }
             });
