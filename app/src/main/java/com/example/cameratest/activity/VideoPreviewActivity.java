@@ -30,19 +30,25 @@ import com.example.cameratest.R;
 import com.example.cameratest.adapter.GridAdapter;
 import com.example.cameratest.adapter.PreviewAdapter;
 import com.example.cameratest.bean.VideoBean;
+import com.example.cameratest.inteface.ListItemClickInteface;
+import com.example.cameratest.uistyle.SelectorPopupWindow;
 import com.example.cameratest.util.CommonUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public class VideoPreviewActivity extends Activity {
+public class VideoPreviewActivity extends Activity implements ListItemClickInteface{
     private GridView gridView = null;
     private PreviewAdapter previewAdapter = null;
     private List<VideoBean> videoBeanList = new ArrayList<>();
     private MyTask task = null;
     private TextView hintText = null;
     private MediaMetadataRetriever media =new MediaMetadataRetriever();
+    private SelectorPopupWindow selectorPopupWindow = null;
+    private int currentLongClick = 0;
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -77,6 +83,22 @@ public class VideoPreviewActivity extends Activity {
         task.execute();
     }
 
+    @Override
+    public void shareThirdPlatform() {
+
+    }
+
+    @Override
+    public void delete() {
+        new File(videoBeanList.get(currentLongClick).getPath()).delete();
+        videoBeanList.clear();
+
+        task.cancel(true);
+        task = null;
+        task = new MyTask();
+        task.execute();
+    }
+
     public class MyTask extends AsyncTask{
 
         @Override
@@ -90,6 +112,8 @@ public class VideoPreviewActivity extends Activity {
     }
 
     private void setViews() {
+        selectorPopupWindow = new SelectorPopupWindow(VideoPreviewActivity.this,1);
+        selectorPopupWindow.setListItemListener(this);
         gridView = (GridView) findViewById(R.id.grid_preview);
         gridView.setNumColumns(5);
         gridView.setHorizontalSpacing(10);
@@ -102,7 +126,17 @@ public class VideoPreviewActivity extends Activity {
                 startActivity(intent);
             }
         });
-
+        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                currentLongClick = position;
+                if(selectorPopupWindow != null){
+                    Log.d("imgGrid","selectorPopupWindow show");
+                    selectorPopupWindow.show(findViewById(R.id.parent_view));
+                }
+                return true;
+            }
+        });
 
     }
 
@@ -151,7 +185,14 @@ public class VideoPreviewActivity extends Activity {
         if (path != null) {
             File f = new File(path + "/CameraJXD/Video");
             File[] files = f.listFiles();
-            for(File ff : files){
+
+            ArrayList<File> fileList = new ArrayList<>();
+            for(File file:files){
+                fileList.add(file);
+            }
+            Collections.sort(fileList, new CommonUtils.FileComparator());
+
+            for(File ff : fileList){
                 VideoBean v = new VideoBean();
                 v.setPath(ff.getPath());
                 v.setDuration(getVideoDuration(ff.getPath()));

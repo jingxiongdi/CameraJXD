@@ -2,12 +2,15 @@ package com.example.cameratest.activity;
 
 import com.example.cameratest.CameraApp;
 import com.example.cameratest.R;
+import com.example.cameratest.uistyle.RoundImageView;
+import com.example.cameratest.util.CommonUtils;
 import com.example.cameratest.util.Contants;
 import com.orhanobut.hawk.Hawk;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
@@ -41,7 +44,7 @@ public class RecordVideoActivity extends Activity implements SurfaceHolder.Callb
     private ToggleButton swichCameraBtn = null;
     private ToggleButton flashBtn = null;
     private boolean openFlashLight = false;
-    private ImageView previewImageView = null;
+    private RoundImageView previewImageView = null;
 
     private Runnable mTimeRun = new Runnable() {
         @Override
@@ -167,6 +170,7 @@ public class RecordVideoActivity extends Activity implements SurfaceHolder.Callb
         }
     }
 
+
     private void setView() {
         flashBtn = (ToggleButton) findViewById(R.id.flash_light);
         flashBtn.setOnCheckedChangeListener(flashLightListenr);
@@ -177,7 +181,14 @@ public class RecordVideoActivity extends Activity implements SurfaceHolder.Callb
         mControlBtn = (Button) findViewById(R.id.start_photo);
         mTime = (TextView) findViewById(R.id.time);
 
-        previewImageView = (ImageView) findViewById(R.id.video_preview);
+        previewImageView = (RoundImageView) findViewById(R.id.video_preview);
+        Bitmap bitmap = CommonUtils.getVideoBitmap(RecordVideoActivity.this);
+        if(bitmap!=null){
+            previewImageView.setImageBitmap(bitmap);
+        }
+        else{
+            previewImageView.setBackgroundResource(R.mipmap.ic_launcher);
+        }
         previewImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -225,6 +236,19 @@ public class RecordVideoActivity extends Activity implements SurfaceHolder.Callb
                             }
                         }
                         mCamera.unlock();
+//                        Camera.Parameters myParameters = mCamera.getParameters();
+//                        List<Camera.Size> sizeList = myParameters.getSupportedPreviewSizes();//获取所有支持的camera尺寸
+//                        Log.d("jxd", "optionSize : mSurfaceView " + mSurfaceView.getWidth() + " * " + mSurfaceView.getHeight());
+//                        Camera.Size optionSize = getOptimalPreviewSize(sizeList, mSurfaceView.getHeight(), mSurfaceView.getWidth());//获取一个最为适配的camera.size
+//                        Log.d("jxd", "optionSize : " + optionSize.width + " * " + optionSize.height);
+//                        myParameters.setPreviewSize(optionSize.width, optionSize.height);//把camera.size赋值到parameters
+//                        if (openFlashLight) {
+//                            myParameters.setFlashMode(myParameters.FLASH_MODE_ON);
+//                        } else
+//                        {
+//                            myParameters.setFlashMode(myParameters.FLASH_MODE_OFF);
+//                        }
+//                        mCamera.setParameters(myParameters);
                         mRecorder.setCamera(mCamera);
                         // Set audio and video source and encoder
 
@@ -300,6 +324,8 @@ public class RecordVideoActivity extends Activity implements SurfaceHolder.Callb
                         mRecordTime = 0;
                         mTime.setVisibility(View.GONE);
                         mControlBtn.setText("开始录像");
+//                        previewImageView.setBackgroundResource(0);
+//                        previewImageView.setImageBitmap(CommonUtils.getVideoBitmap(RecordVideoActivity.this));
                         try {
                             mRecorder.stop();
                             mRecorder.reset();
@@ -426,6 +452,10 @@ public class RecordVideoActivity extends Activity implements SurfaceHolder.Callb
     @Override
     protected void onPause() {
         super.onPause();
+        if (mRecorder != null) {
+            mRecorder.release();
+            mRecorder = null;
+        }
         mCamera.stopPreview();
         mCamera.release();
         mCamera = null;

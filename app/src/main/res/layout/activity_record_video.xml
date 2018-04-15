@@ -20,8 +20,8 @@
         android:checked="true"
         android:textColor="@color/white"
         android:textSize="22sp"
-        android:textOff="前置摄像头"
-        android:textOn="后置摄像头" />
+        android:textOff="后置摄像头"
+        android:textOn="前置摄像头" />
 
     <ToggleButton
         android:id="@+id/flash_light"
@@ -56,14 +56,13 @@
         android:textColor="@color/colorAccent"
         />
 
-    <ImageView
+    <com.example.cameratest.uistyle.RoundImageView
         android:id="@+id/video_preview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/ic_launcher"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         />
 </RelativeLayout>

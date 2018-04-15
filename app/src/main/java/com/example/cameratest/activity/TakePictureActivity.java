@@ -23,9 +23,11 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.bumptech.glide.Glide;
 import com.example.cameratest.CameraApp;
 import com.example.cameratest.R;
 import com.example.cameratest.uistyle.RoundImageView;
+import com.example.cameratest.util.CommonUtils;
 import com.example.cameratest.util.Contants;
 import com.orhanobut.hawk.Hawk;
 
@@ -33,6 +35,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -68,6 +71,10 @@ public class TakePictureActivity extends Activity implements SurfaceHolder.Callb
         //隐藏状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,  WindowManager.LayoutParams.FLAG_FULLSCREEN);
         roundImageView = (RoundImageView) findViewById(R.id.round_img);
+        ArrayList<File> fileList = CommonUtils.getImgs(TakePictureActivity.this);
+        if(fileList!=null &&fileList.size() > 1){
+            Glide.with(TakePictureActivity.this).load(fileList.get(0)).into(roundImageView);
+        }
         flashBtn = (ToggleButton) findViewById(R.id.flash_light);
         flashBtn.setOnCheckedChangeListener(flashLightListenr);
         swichCameraBtn = (ToggleButton) findViewById(R.id.toggle);
@@ -429,6 +436,7 @@ public class TakePictureActivity extends Activity implements SurfaceHolder.Callb
 
             Bitmap dstbmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(),
                     matrix, true);
+
             FileOutputStream fOut = null;
             try {
                 fOut = new FileOutputStream(Environment.getExternalStorageDirectory()+"/CameraJXD/Photo/"+"rotate"+fname);
@@ -443,6 +451,8 @@ public class TakePictureActivity extends Activity implements SurfaceHolder.Callb
                 @Override
                 public void run() {
                     mCamera.startPreview();
+                    File f = new File(Environment.getExternalStorageDirectory() + "/CameraJXD/photo/" + "rotate" + fname);
+                    Glide.with(TakePictureActivity.this).load(f).into(roundImageView);
                     Toast.makeText(TakePictureActivity.this, "拍照成功，存储路径为：" + Environment.getExternalStorageDirectory() + "/CameraJXD/photo/" + "rotate" + fname, Toast.LENGTH_SHORT).show();
                 }
             });

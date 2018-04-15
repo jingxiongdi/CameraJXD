@@ -16,6 +16,7 @@ import com.example.cameratest.uistyle.MarqueeTextView;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -25,17 +26,17 @@ public class PhotoPreviewAdapter extends BaseAdapter
 {
     private LayoutInflater mInflater;
     private Context mContext;
-    private File[] photoList;
+    private ArrayList<File> photoList;
 
 
-    public PhotoPreviewAdapter(Context context, File[] list)
+    public PhotoPreviewAdapter(Context context, ArrayList<File> list)
     {
         this.mContext = context;
         mInflater = LayoutInflater.from(mContext);
         photoList = list;
     }
 
-    public void notifyData( File[] list){
+    public void notifyData( ArrayList<File> list){
         photoList = list;
         notifyDataSetChanged();
     }
@@ -43,7 +44,7 @@ public class PhotoPreviewAdapter extends BaseAdapter
     public int getCount()
     {
         // TODO Auto-generated method stub
-        return photoList.length;
+        return photoList.size();
     }
     
     public Object getItem(int position)
@@ -80,9 +81,9 @@ public class PhotoPreviewAdapter extends BaseAdapter
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Glide.with(mContext).load(photoList[position]).into(viewHolder.imageGrid);
+        Glide.with(mContext).load(photoList.get(position)).into(viewHolder.imageGrid);
 
-        long length = photoList[position].length();
+        long length = photoList.get(position).length();
         float ff = length/(1024f*1024f);
         if(ff<1)
         {
@@ -98,7 +99,7 @@ public class PhotoPreviewAdapter extends BaseAdapter
             viewHolder.sizeText.setText(text+"MB");
         }
         viewHolder.durationText.setVisibility(View.GONE);
-        viewHolder.nameText.setText(photoList[position].getName());
+        viewHolder.nameText.setText(photoList.get(position).getName());
         return convertView;
     }
 

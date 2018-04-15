@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -19,15 +20,20 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.cameratest.R;
 import com.example.cameratest.adapter.PhotoPreviewAdapter;
+import com.example.cameratest.inteface.ListItemClickInteface;
+import com.example.cameratest.uistyle.SelectorPopupWindow;
 import com.example.cameratest.util.CommonUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 
-public class PhotoPreviewActivity extends Activity {
+public class PhotoPreviewActivity extends Activity implements ListItemClickInteface{
     private GridView imgGrid = null;
     private TextView hintText = null;
-    private File[] photoFiles = null;
+    private ArrayList<File> photoFiles = null;
     private PhotoPreviewAdapter photoPreviewAdapter = null;
+    private SelectorPopupWindow selectorPopupWindow = null;
+    private int currentLongClick = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +45,8 @@ public class PhotoPreviewActivity extends Activity {
     }
 
     private void setViews() {
+        selectorPopupWindow = new SelectorPopupWindow(PhotoPreviewActivity.this);
+        selectorPopupWindow.setListItemListener(this);
         imgGrid = (GridView) findViewById(R.id.grid_preview);
         imgGrid.setNumColumns(5);
         imgGrid.setVerticalSpacing(10);
@@ -49,6 +57,19 @@ public class PhotoPreviewActivity extends Activity {
                 Intent intent = new Intent(PhotoPreviewActivity.this,GalleryActivity.class);
                 intent.putExtra("current_postion",position);
                 startActivity(intent);
+            }
+        });
+
+        imgGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                currentLongClick = position;
+                if(selectorPopupWindow != null){
+                   Log.d("imgGrid","selectorPopupWindow show");
+                    selectorPopupWindow.show(findViewById(R.id.parent_view));
+                }
+                return true;
             }
         });
         hintText = (TextView) findViewById(R.id.hint);
@@ -98,4 +119,19 @@ public class PhotoPreviewActivity extends Activity {
          return bitmap;
     }
 
+    @Override
+    public void shareThirdPlatform() {
+        Uri uri = Uri.fromFile(photoFiles.get(currentLongClick));
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.setType("image/jpeg");
+        startActivity(Intent.createChooser(intent, "分享"));
+    }
+
+    @Override
+    public void delete() {
+        photoFiles.get(currentLongClick).delete();
+        photoFiles = CommonUtils.getImgs(PhotoPreviewActivity.this);
+        photoPreviewAdapter.notifyData(photoFiles);
+    }
 }

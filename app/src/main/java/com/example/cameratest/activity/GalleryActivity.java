@@ -20,10 +20,11 @@ import com.example.cameratest.R;
 import com.example.cameratest.util.CommonUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class GalleryActivity extends Activity {
     private int verticalMinDistance = 50;
-    private  File[] imgs;
+    private ArrayList<File> imgs;
    // private ImageSwitcher imageSwitcher;
     private int curPos = 0;
     private ImageView curImgView;
@@ -55,14 +56,14 @@ public class GalleryActivity extends Activity {
 
         imgs = CommonUtils.getImgs(GalleryActivity.this);
 
-        if(imgs == null ||imgs.length<=0)
+        if(imgs == null ||imgs.size()<=0)
         {
             Toast.makeText(GalleryActivity.this,"当前目录下还没有存储照片",Toast.LENGTH_LONG).show();
             return;
         }
-        curPos = getIntent().getIntExtra("current_postion",imgs.length-1);
+        curPos = getIntent().getIntExtra("current_postion",imgs.size()-1);
         //curPos = imgs.length-1;
-        Glide.with(this).load(imgs[curPos]).into(curImgView);
+        Glide.with(this).load(imgs.get(curPos)).into(curImgView);
 //        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {//设置转化工厂
 //
 //            @Override
@@ -122,7 +123,7 @@ public class GalleryActivity extends Activity {
                 if(curPos > 0)
                 {
                     curPos--;
-                    Glide.with(GalleryActivity.this).load(imgs[curPos]).into(curImgView);
+                    Glide.with(GalleryActivity.this).load(imgs.get(curPos)).into(curImgView);
                 }
                 else
                 {
@@ -132,10 +133,10 @@ public class GalleryActivity extends Activity {
             } else if (e1.getX() -e2.getX() > verticalMinDistance){
 
                 Log.d("pingan", "向左手势");
-                if(curPos < imgs.length-1)
+                if(curPos < imgs.size()-1)
                 {
                     curPos++;
-                    Glide.with(GalleryActivity.this).load(imgs[curPos]).into(curImgView);
+                    Glide.with(GalleryActivity.this).load(imgs.get(curPos)).into(curImgView);
                 }
                 else
                 {
