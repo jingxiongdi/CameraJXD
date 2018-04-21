@@ -51,5 +51,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="36dp" />
+    <ToggleButton
+        android:id="@+id/watermark"
+        android:background="@color/colorAccent"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:checked="true"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textOff="开启时间水印"
+        android:textOn="去除时间水印" />
 
 </LinearLayout>

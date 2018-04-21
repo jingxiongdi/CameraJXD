@@ -1,6 +1,7 @@
 package com.example.cameratest.activity;
 
 import android.app.Activity;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -23,12 +25,14 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class GalleryActivity extends Activity {
+    private String TAG = GalleryActivity.class.getSimpleName();
     private int verticalMinDistance = 50;
     private ArrayList<File> imgs;
    // private ImageSwitcher imageSwitcher;
     private int curPos = 0;
     private ImageView curImgView;
     private GestureDetector mGestureDetector;
+    private Button viewInfo = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +44,7 @@ public class GalleryActivity extends Activity {
     }
 
     private void setViews() {
+        viewInfo = (Button) findViewById(R.id.view_info);
        // imageSwitcher = (ImageSwitcher) findViewById(R.id.cur_img);
         curImgView = (ImageView) findViewById(R.id.cur_img);
         mGestureDetector = new GestureDetector(GalleryActivity.this,new MyGestureListener());
@@ -48,6 +53,57 @@ public class GalleryActivity extends Activity {
             public boolean onTouch(View v, MotionEvent event) {
                 Log.d("pingan", "onTouch");
                 return mGestureDetector.onTouchEvent(event);
+            }
+        });
+        viewInfo.setVisibility(View.GONE);
+
+        viewInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    ExifInterface exifInterface = new ExifInterface(
+                            imgs.get(curPos).getPath());
+                    String FFNumber = exifInterface
+                            .getAttribute(ExifInterface.TAG_APERTURE);
+                    String FDateTime = exifInterface
+                            .getAttribute(ExifInterface.TAG_DATETIME);
+                    String FExposureTime = exifInterface
+                            .getAttribute(ExifInterface.TAG_EXPOSURE_TIME);
+                    String FFlash = exifInterface
+                            .getAttribute(ExifInterface.TAG_FLASH);
+                    String FFocalLength = exifInterface
+                            .getAttribute(ExifInterface.TAG_FOCAL_LENGTH);
+                    String FImageLength = exifInterface
+                            .getAttribute(ExifInterface.TAG_IMAGE_LENGTH);
+                    String FImageWidth = exifInterface
+                            .getAttribute(ExifInterface.TAG_IMAGE_WIDTH);
+                    String FISOSpeedRatings = exifInterface
+                            .getAttribute(ExifInterface.TAG_ISO);
+                    String FMake = exifInterface
+                            .getAttribute(ExifInterface.TAG_MAKE);
+                    String FModel = exifInterface
+                            .getAttribute(ExifInterface.TAG_MODEL);
+                    String FOrientation = exifInterface
+                            .getAttribute(ExifInterface.TAG_ORIENTATION);
+                    String FWhiteBalance = exifInterface
+                            .getAttribute(ExifInterface.TAG_WHITE_BALANCE);
+
+                    Log.i(TAG, "FFNumber:" + FFNumber);
+                    Log.i(TAG, "FDateTime:" + FDateTime);
+                    Log.i(TAG, "FExposureTime:" + FExposureTime);
+                    Log.i(TAG, "FFlash:" + FFlash);
+                    Log.i(TAG, "FFocalLength:" + FFocalLength);
+                    Log.i(TAG, "FImageLength:" + FImageLength);
+                    Log.i(TAG, "FImageWidth:" + FImageWidth);
+                    Log.i(TAG, "FISOSpeedRatings:" + FISOSpeedRatings);
+                    Log.i(TAG, "FMake:" + FMake);
+                    Log.i(TAG, "FModel:" + FModel);
+                    Log.i(TAG, "FOrientation:" + FOrientation);
+                    Log.i(TAG, "FWhiteBalance:" + FWhiteBalance);
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         });
     }

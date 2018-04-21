@@ -17,6 +17,8 @@ public class CameraApp extends Application
 
     private int mCameraDirection = 0;
 
+    private boolean waterMark = true;
+
     public static CameraApp getInstance()
     {
         if(app == null)
@@ -102,5 +104,11 @@ public class CameraApp extends Application
         camera.setDisplayOrientation ( result );
     }
 
+    public boolean isWaterMark() {
+        return waterMark;
+    }
 
+    public void setWaterMark(boolean waterMark) {
+        this.waterMark = waterMark;
+    }
 }

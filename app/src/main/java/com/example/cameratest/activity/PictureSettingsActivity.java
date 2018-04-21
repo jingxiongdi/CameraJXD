@@ -6,9 +6,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.cameratest.CameraApp;
 import com.example.cameratest.R;
@@ -33,6 +35,7 @@ public class PictureSettingsActivity extends Activity
     private TextView cameraText = null;
     private Spinner  mCameraSpinner = null;
     private ArrayAdapter<String> mCameraAdapter;
+    private ToggleButton waterMark = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,6 +58,21 @@ public class PictureSettingsActivity extends Activity
 
         qualityText = (TextView) findViewById(R.id.qulity);
         mPhotoQualitySpinner = (Spinner) findViewById(R.id.qulitySpiner);
+
+        waterMark = (ToggleButton) findViewById(R.id.watermark);
+        waterMark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    CameraApp.getInstance().setWaterMark(true);
+                    Toast.makeText(PictureSettingsActivity.this,"添加时间水印",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    CameraApp.getInstance().setWaterMark(false);
+                    Toast.makeText(PictureSettingsActivity.this,"去除时间水印",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void initData()

@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -85,7 +86,24 @@ public class VideoPreviewActivity extends Activity implements ListItemClickIntef
 
     @Override
     public void shareThirdPlatform() {
+        File f = new File(videoBeanList.get(currentLongClick).getPath());
+        Uri uri = Uri.fromFile(f);
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.setType("*/*");
+        startActivity(Intent.createChooser(intent, "分享"));
 
+
+        /**
+         * android 分享多个文件
+         */
+//        ArrayList<Uri> files = new ArrayList<Uri>();
+//        files.add(Uri.fromFile(newFile(文件路径)));
+////分享文件
+//        Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);//发送多个文件
+//        intent.setType("*/*");//多个文件格式
+//        intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM,files);//Intent.EXTRA_STREAM同于传输文件流
+//        startActivity(intent);
     }
 
     @Override
@@ -112,7 +130,7 @@ public class VideoPreviewActivity extends Activity implements ListItemClickIntef
     }
 
     private void setViews() {
-        selectorPopupWindow = new SelectorPopupWindow(VideoPreviewActivity.this,1);
+        selectorPopupWindow = new SelectorPopupWindow(VideoPreviewActivity.this,0);
         selectorPopupWindow.setListItemListener(this);
         gridView = (GridView) findViewById(R.id.grid_preview);
         gridView.setNumColumns(5);

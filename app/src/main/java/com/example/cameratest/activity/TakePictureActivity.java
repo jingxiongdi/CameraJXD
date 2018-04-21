@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,6 +38,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -436,7 +440,9 @@ public class TakePictureActivity extends Activity implements SurfaceHolder.Callb
 
             Bitmap dstbmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(),
                     matrix, true);
-
+            if(CameraApp.getInstance().isWaterMark()){
+                dstbmp = addTimeFlag(dstbmp);
+            }
             FileOutputStream fOut = null;
             try {
                 fOut = new FileOutputStream(Environment.getExternalStorageDirectory()+"/CameraJXD/Photo/"+"rotate"+fname);
@@ -475,5 +481,35 @@ public class TakePictureActivity extends Activity implements SurfaceHolder.Callb
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
 
+    }
+
+    /**
+     * 添加时间水印
+     *
+     */
+    private Bitmap addTimeFlag(Bitmap src){
+        // 获取原始图片与水印图片的宽与高
+        int w = src.getWidth();
+        int h = src.getHeight();
+        Bitmap newBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas mCanvas = new Canvas(newBitmap);
+        // 往位图中开始画入src原始图片
+        mCanvas.drawBitmap(src, 0, 0, null);
+        //添加文字
+        Paint textPaint = new Paint();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String time = sdf.format(new Date(System.currentTimeMillis()));
+        textPaint.setColor(Color.RED) ;
+        textPaint.setTextSize(40);
+//        String familyName = "宋体";
+//        Typeface typeface = Typeface.create(familyName,
+//                Typeface.BOLD_ITALIC);
+//        textPaint.setTypeface(typeface);
+//        textPaint.setTextAlign(Align.CENTER);
+
+        mCanvas.drawText(time, (float)(w*3)/7, (float)(h*18)/19, textPaint);
+        mCanvas.save(Canvas.ALL_SAVE_FLAG);
+        mCanvas.restore();
+        return newBitmap ;
     }
 }
