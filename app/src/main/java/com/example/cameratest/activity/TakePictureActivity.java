@@ -499,15 +499,15 @@ public class TakePictureActivity extends Activity implements SurfaceHolder.Callb
         Paint textPaint = new Paint();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String time = sdf.format(new Date(System.currentTimeMillis()));
-        textPaint.setColor(Color.RED) ;
-        textPaint.setTextSize(40);
+        textPaint.setColor(Color.WHITE) ;
+        textPaint.setTextSize(45);
 //        String familyName = "宋体";
 //        Typeface typeface = Typeface.create(familyName,
 //                Typeface.BOLD_ITALIC);
 //        textPaint.setTypeface(typeface);
 //        textPaint.setTextAlign(Align.CENTER);
 
-        mCanvas.drawText(time, (float)(w*3)/7, (float)(h*18)/19, textPaint);
+        mCanvas.drawText(time, (float)(w*3)/8, (float)(h*18)/19, textPaint);
         mCanvas.save(Canvas.ALL_SAVE_FLAG);
         mCanvas.restore();
         return newBitmap ;

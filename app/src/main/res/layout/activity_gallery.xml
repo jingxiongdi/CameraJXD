@@ -9,11 +9,17 @@
         android:id="@+id/view_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="查看照片详细信息"/>
+        android:text="保存处理过的图片"/>
+    <SeekBar
+        android:id="@+id/seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"/>
     <ImageView
         android:id="@+id/cur_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusableInTouchMode="true"
         />
+
 </LinearLayout>
