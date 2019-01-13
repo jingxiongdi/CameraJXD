@@ -273,11 +273,11 @@ public class RecordVideoActivity extends Activity implements SurfaceHolder.Callb
  //                       mRecorder.setVideoSize(size.width, size.height);
  //                       mRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
 
-//                        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);// 视频输出格式
-//                        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);// 音频格式
-//                        mRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);// 视频录制格式
+//                        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);// 视频输出格式
+//                        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);// 音频格式
+//                        mRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);// 视频录制格式
 
-                        //mRecorder.setVideoEncodingBitRate(1024);
+                        mRecorder.setVideoEncodingBitRate(1024*1024);
                         if(CameraApp.getInstance().getmCameraDirection() == 0 && Hawk.contains(Contants.CURRENT_VIDEO_SIZE_BACK))
                         {
                             Log.d("jxd","backrecord size : "+Hawk.get(Contants.CURRENT_VIDEO_SIZE_BACK));

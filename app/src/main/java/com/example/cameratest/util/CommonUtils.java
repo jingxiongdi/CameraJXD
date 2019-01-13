@@ -38,8 +38,13 @@ public class CommonUtils {
         String path = CameraApp.getAllSdPaths(context)[0];
         if (path != null) {
             File f = new File(path + "/CameraJXD/Video");
+            if(!f.exists()){
+                f.mkdirs();
+            }
             File[] files = f.listFiles();
-
+            if(files == null || files.length==0){
+                return null;
+            }
             ArrayList<File> fileList = new ArrayList<>();
             for(File file:files){
                 fileList.add(file);
